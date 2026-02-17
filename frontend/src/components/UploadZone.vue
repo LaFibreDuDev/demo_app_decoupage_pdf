@@ -1,8 +1,17 @@
 <template>
   <div class="w-full max-w-md">
-    <!-- Zone de sélection -->
+    <!-- Zone de sélection / dépôt -->
     <div
-      class="border-2 border-dashed border-gray-300 rounded-xl p-10 flex flex-col items-center gap-4 bg-white hover:border-blue-400 transition-colors"
+      :class="[
+        'border-2 border-dashed rounded-xl p-10 flex flex-col items-center gap-4 transition-colors',
+        isDragging
+          ? 'border-blue-500 bg-blue-50'
+          : 'border-gray-300 bg-white hover:border-blue-400'
+      ]"
+      @dragenter.prevent="onDragEnter"
+      @dragleave.prevent="onDragLeave"
+      @dragover.prevent
+      @drop.prevent="onDrop"
     >
       <svg
         class="w-12 h-12 text-gray-400"
@@ -18,8 +27,11 @@
         />
       </svg>
       <p class="text-gray-600 text-sm text-center">
-        Sélectionnez un fichier PDF<br />
-        <span class="text-gray-400 text-xs">Taille maximale : {{ maxSizeMb }} Mo</span>
+        <span v-if="isDragging" class="font-medium text-blue-600">Déposez votre PDF ici</span>
+        <template v-else>
+          Glissez-déposez un PDF ou<br />
+          <span class="text-gray-400 text-xs">Taille maximale : {{ maxSizeMb }} Mo</span>
+        </template>
       </p>
       <button
         @click="openFilePicker"
@@ -50,13 +62,15 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 
 const emit = defineEmits(['upload-success'])
 
 const fileInput = ref(null)
 const loading = ref(false)
 const error = ref(null)
+const dragCounter = ref(0)
+const isDragging = computed(() => dragCounter.value > 0)
 
 const maxSizeMb = parseInt(import.meta.env.VITE_UPLOAD_MAX_SIZE_MB, 10)
 const MAX_SIZE = maxSizeMb * 1024 * 1024
@@ -66,12 +80,9 @@ function openFilePicker() {
   fileInput.value.click()
 }
 
-async function onFileSelected(event) {
-  const file = event.target.files[0]
+async function processFile(file) {
   if (!file) return
-
-  // Reset input pour permettre re-sélection du même fichier
-  event.target.value = ''
+  if (loading.value) return
 
   // Validation client
   if (file.type !== 'application/pdf') {
@@ -112,5 +123,26 @@ async function onFileSelected(event) {
   } finally {
     loading.value = false
   }
+}
+
+function onFileSelected(event) {
+  const file = event.target.files[0]
+  // Reset input pour permettre re-sélection du même fichier
+  event.target.value = ''
+  processFile(file)
+}
+
+function onDragEnter() {
+  dragCounter.value++
+}
+
+function onDragLeave() {
+  dragCounter.value--
+}
+
+function onDrop(event) {
+  dragCounter.value = 0
+  const file = event.dataTransfer.files[0]
+  processFile(file)
 }
 </script>
