@@ -30,9 +30,12 @@
       "Bash(git log:*)",
       "Bash(gh issue view:*)",
       "WebFetch(domain:*)",
-      "Skill(*)"
+      "Skill(*)",
+      "mcp__puppeteer-mcp-claude__puppeteer_screenshot",
+      "mcp__puppeteer-mcp-claude__puppeteer_evaluate",
+      "Bash(curl:*)",
+      "mcp__puppeteer-mcp-claude__puppeteer_navigate"
     ],
-    "deny": [
-    ]
+    "deny": []
   }
 }
