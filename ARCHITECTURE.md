@@ -5,7 +5,7 @@
 | Couche      | Technologie             | Version cible |
 |-------------|-------------------------|---------------|
 | Backend     | Python / FastAPI        | Python 3.11+  |
-| Frontend    | Vue 3 + Vite            | Vue 3.4+      |
+| Frontend    | Vue 3 + Vite + TypeScript | Vue 3.5+    |
 | Styling     | Tailwind CSS            | v3            |
 | PDF parsing | pikepdf                 | dernière      |
 | Miniatures  | pdf2image (Poppler)     | dernière      |
@@ -34,8 +34,9 @@
 |-----------------|---------------------------------------------------------|
 | `vue`           | Framework réactif, composants SFC                       |
 | `vite`          | Bundler/dev server ultra-rapide                         |
+| `typescript`    | Typage statique, utilisé dans tous les composants Vue   |
+| `vue-tsc`       | Vérification de types sur les fichiers `.vue`           |
 | `tailwindcss`   | Utilitaires CSS, responsive mobile/desktop              |
-| `@vueuse/core`  | Composables utilitaires (useDrop, useEventListener…)    |
 
 ---
 
@@ -138,8 +139,10 @@ appli_demo2/
 ├── frontend/
 │   ├── index.html
 │   ├── vite.config.js
+│   ├── tsconfig.json
 │   ├── tailwind.config.js
 │   └── src/
+│       ├── vite-env.d.ts
 │       ├── main.js
 │       ├── App.vue
 │       └── components/

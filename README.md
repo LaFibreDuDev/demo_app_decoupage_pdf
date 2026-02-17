@@ -15,7 +15,7 @@ Application web permettant de découper un PDF en fichiers séparés et de les t
 | Couche      | Technologie                     |
 |-------------|---------------------------------|
 | Backend     | Python 3.11+ / FastAPI          |
-| Frontend    | Vue 3 + Vite + Tailwind CSS v3  |
+| Frontend    | Vue 3 + Vite + TypeScript + Tailwind CSS v3 |
 | PDF parsing | pikepdf                         |
 | Miniatures  | pdf2image (Poppler)             |
 | Serveur     | Uvicorn (ASGI)                  |
@@ -69,7 +69,7 @@ python3 -m uvicorn main:app --reload --port 8000 &
 L'API est disponible sur **http://localhost:8000**.
 Documentation Swagger auto-générée : **http://localhost:8000/docs**
 
-### 2. Frontend (Vue 3 + Vite)
+### 2. Frontend (Vue 3 + Vite + TypeScript)
 
 Dans un second terminal :
 
@@ -111,8 +111,10 @@ appli_demo2/
 ├── frontend/
 │   ├── index.html
 │   ├── vite.config.js
+│   ├── tsconfig.json
 │   ├── tailwind.config.js
 │   └── src/
+│       ├── vite-env.d.ts
 │       ├── main.js
 │       ├── App.vue
 │       └── components/      # UploadZone.vue, PageGrid.vue,

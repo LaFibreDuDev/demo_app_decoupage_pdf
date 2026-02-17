@@ -18,7 +18,7 @@ Application permettant à un utilisateur de :
 | Couche      | Technologie             |
 |-------------|-------------------------|
 | Backend     | Python / FastAPI        |
-| Frontend    | Vue 3 + Vite            |
+| Frontend    | Vue 3 + Vite + TypeScript |
 | Styling     | Tailwind CSS v3         |
 | PDF parsing | pikepdf                 |
 | Miniatures  | pdf2image (Poppler)     |
