@@ -36,3 +36,32 @@ Sur l’UX/UI
 L’interface doit-elle être drag & drop pour l’upload ? Oui, une interface drag & drop serait plus intuitive et rapide pour les utilisateurs.
 Veut-on un aperçu des pages avant découpage ? Oui, un aperçu des pages serait très utile pour que les utilisateurs puissent sélectionner les pages à découper avec précision.
 Faut-il permettre à l’utilisateur de sélectionner rapidement plusieurs pages ? Oui, il serait utile de permettre à l’utilisateur de sélectionner rapidement plusieurs pages, par exemple en utilisant des cases à cocher ou une sélection par glisser-déposer dans l’aperçu des pages.
+
+Ajoute ces informations dans mon @CLAUDE.md ne retouche pas à l'existant 
+dans le fichier.
+
+Aperçu de l'objectif du projet
+
+Aperçu de l'architecture globale
+
+Style visuel :
+- Interface claire et minimaliste
+- Pas de mode sombre pour le MVP
+
+Contraintes et Politiques :
+- NE JAMAIS exposer les clés API au client 
+
+Dépendances :
+- Préférer les composants existants plutôt que d'ajouter de nouvelles 
+bibliothèques UI
+
+À la fin de chaque développement qui implique l'interface graphique :
+- Tester avec le MCP Puppeteer, l'interface doit être responsive, fonctionnel et répondre au besoin développé
+
+Documentation :
+- Ajoute une section documentation avec les liens vers @PRD.md & @ARCHITECTURE.md 
+
+Context7 :
+Utilise toujours context7 lorsque j'ai besoin de génération de code, d'étapes de configuration ou d'installation, ou de documentation de bibliothèque/API. Cela signifie que tu dois automatiquement utiliser les outils MCP Context7 pour résoudre l'identifiant de bibliothèque et obtenir la documentation de bibliothèque sans que j'aie à le demander explicitement.
+
+Note : Toutes les spécifications doivent être rédigées en français, y compris les specs OpenSpec (sections Purpose et Scenarios). Seuls les titres de Requirements doivent rester en anglais avec les mots-clés SHALL/MUST pour la validation OpenSpec.
