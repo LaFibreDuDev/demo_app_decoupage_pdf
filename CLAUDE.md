@@ -55,6 +55,24 @@ appli_demo2/
 
 - **NE JAMAIS exposer les clés API au client.**
 
+### Configuration backend — variables d'environnement
+
+**RÈGLE ABSOLUE : aucune valeur de configuration ne doit être hardcodée dans les modules backend.**
+
+Toute valeur configurable (URLs, tailles limites, chemins, durées, résolutions, origines CORS…) doit :
+1. Être déclarée dans `backend/.env` (et dans `backend/.env.example`).
+2. Être chargée **uniquement** via `backend/config.py`, qui fait autorité pour toute la configuration.
+3. Être importée depuis `config.py` dans les routes et services : `from config import MA_VARIABLE`.
+
+Avant d'écrire un nouveau module ou d'ajouter une constante dans une route ou un service, **vérifier si la valeur est déjà définie dans `.env`**. Si une nouvelle variable est nécessaire, l'ajouter simultanément dans `.env`, `.env.example` et `config.py`.
+
+Exemples de valeurs **interdites en dur** dans les modules :
+- Chemins de répertoires (`/tmp/…`)
+- Tailles limites (`10 * 1024 * 1024`)
+- Origines CORS (`http://localhost:5173`)
+- Durées d'expiration
+- Résolutions d'image (DPI)
+
 ---
 
 ## Dépendances
