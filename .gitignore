@@ -1,0 +1,22 @@
+# Variables d'environnement (ne pas versionner)
+backend/.env
+
+# Fichiers temporaires Python
+__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+.venv/
+venv/
+
+# Fichiers temporaires Node / frontend
+node_modules/
+frontend/dist/
+frontend/.vite/
+
+# Répertoire de sessions temporaires
+/tmp/pdf_splitter/
+
+# OS
+.DS_Store
+Thumbs.db
