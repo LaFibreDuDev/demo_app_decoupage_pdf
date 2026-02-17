@@ -110,12 +110,12 @@ appli_demo2/
 │                            # crypto_service.py, cleanup.py
 ├── frontend/
 │   ├── index.html
-│   ├── vite.config.js
+│   ├── vite.config.ts
 │   ├── tsconfig.json
 │   ├── tailwind.config.js
 │   └── src/
 │       ├── vite-env.d.ts
-│       ├── main.js
+│       ├── main.ts
 │       ├── App.vue
 │       └── components/      # UploadZone.vue, PageGrid.vue,
 │                            # PageCard.vue, DownloadButton.vue
