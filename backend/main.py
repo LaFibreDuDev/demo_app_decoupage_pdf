@@ -1,10 +1,23 @@
+import asyncio
+from contextlib import asynccontextmanager
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from config import ALLOWED_ORIGINS
 from routes.upload import router as upload_router
+from routes.split import router as split_router
+from services.cleanup import cleanup_loop
 
-app = FastAPI(title="PDF Splitter API")
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    task = asyncio.create_task(cleanup_loop())
+    yield
+    task.cancel()
+
+
+app = FastAPI(title="PDF Splitter API", lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,
@@ -14,3 +27,4 @@ app.add_middleware(
 )
 
 app.include_router(upload_router)
+app.include_router(split_router)

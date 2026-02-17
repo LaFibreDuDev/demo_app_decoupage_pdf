@@ -8,5 +8,5 @@ router = APIRouter()
 
 @router.post("/upload", response_model=UploadResponse)
 async def upload_pdf(file: UploadFile = File(...)):
-    session_id, page_count = await save_upload(file)
-    return UploadResponse(session_id=session_id, page_count=page_count)
+    session_id, page_count, original_filename = await save_upload(file)
+    return UploadResponse(session_id=session_id, page_count=page_count, original_filename=original_filename)

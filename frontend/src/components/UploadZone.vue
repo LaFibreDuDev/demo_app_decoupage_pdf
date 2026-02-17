@@ -19,7 +19,7 @@
       </svg>
       <p class="text-gray-600 text-sm text-center">
         Sélectionnez un fichier PDF<br />
-        <span class="text-gray-400 text-xs">Taille maximale : 10 Mo</span>
+        <span class="text-gray-400 text-xs">Taille maximale : {{ maxSizeMb }} Mo</span>
       </p>
       <button
         @click="openFilePicker"
@@ -58,7 +58,8 @@ const fileInput = ref(null)
 const loading = ref(false)
 const error = ref(null)
 
-const MAX_SIZE = 10 * 1024 * 1024 // 10 Mo
+const maxSizeMb = parseInt(import.meta.env.VITE_UPLOAD_MAX_SIZE_MB, 10)
+const MAX_SIZE = maxSizeMb * 1024 * 1024
 
 function openFilePicker() {
   error.value = null
@@ -78,7 +79,7 @@ async function onFileSelected(event) {
     return
   }
   if (file.size > MAX_SIZE) {
-    error.value = 'Le fichier ne doit pas dépasser 10 Mo.'
+    error.value = `Le fichier ne doit pas dépasser ${maxSizeMb} Mo.`
     return
   }
 
@@ -101,7 +102,11 @@ async function onFileSelected(event) {
       return
     }
 
-    emit('upload-success', { session_id: data.session_id, page_count: data.page_count })
+    emit('upload-success', {
+      session_id: data.session_id,
+      page_count: data.page_count,
+      original_filename: data.original_filename,
+    })
   } catch {
     error.value = 'Impossible de contacter le serveur.'
   } finally {

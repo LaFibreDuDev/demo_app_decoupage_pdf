@@ -1,5 +1,6 @@
 # Variables d'environnement (ne pas versionner)
 backend/.env
+frontend/.env
 
 # Fichiers temporaires Python
 __pycache__/

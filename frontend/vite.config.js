@@ -7,6 +7,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/upload': 'http://localhost:8000',
+      '/split': 'http://localhost:8000',
     },
   },
 })
