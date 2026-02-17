@@ -27,12 +27,10 @@
 </template>
 
 <script setup lang="ts">
-withDefaults(defineProps<{
+const { page, selected = false } = defineProps<{
   page: number
   selected?: boolean
-}>(), {
-  selected: false,
-})
+}>()
 
 defineEmits<{
   toggle: []

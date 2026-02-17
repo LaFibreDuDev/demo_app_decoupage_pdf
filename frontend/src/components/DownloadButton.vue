@@ -24,13 +24,11 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
-const props = withDefaults(defineProps<{
+const { sessionId, originalFilename, selectedPages = [] } = defineProps<{
   sessionId: string
   originalFilename: string
   selectedPages?: number[]
-}>(), {
-  selectedPages: () => [],
-})
+}>()
 
 const emit = defineEmits<{
   'download-success': []
@@ -48,9 +46,9 @@ async function download(): Promise<void> {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        session_id: props.sessionId,
-        original_filename: props.originalFilename,
-        pages: props.selectedPages,
+        session_id: sessionId,
+        original_filename: originalFilename,
+        pages: selectedPages,
       }),
     })
 
@@ -64,7 +62,7 @@ async function download(): Promise<void> {
     const url = URL.createObjectURL(blob)
     const a = document.createElement('a')
     a.href = url
-    a.download = `${props.originalFilename}_split.zip`
+    a.download = `${originalFilename}_split.zip`
     a.click()
     URL.revokeObjectURL(url)
 
