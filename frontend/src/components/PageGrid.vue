@@ -26,19 +26,21 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, watch } from 'vue'
 import PageCard from './PageCard.vue'
 
-const props = defineProps({
-  pageCount: { type: Number, required: true },
-})
+const props = defineProps<{
+  pageCount: number
+}>()
 
-const emit = defineEmits(['update:selected-pages'])
+const emit = defineEmits<{
+  'update:selected-pages': [pages: number[]]
+}>()
 
-const selectedPages = ref([])
+const selectedPages = ref<number[]>([])
 
-function togglePage(page) {
+function togglePage(page: number): void {
   const idx = selectedPages.value.indexOf(page)
   if (idx === -1) {
     selectedPages.value = [...selectedPages.value, page].sort((a, b) => a - b)
@@ -47,7 +49,7 @@ function togglePage(page) {
   }
 }
 
-function clearSelection() {
+function clearSelection(): void {
   selectedPages.value = []
 }
 

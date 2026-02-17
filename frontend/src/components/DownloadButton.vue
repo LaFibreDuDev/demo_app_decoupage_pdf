@@ -21,21 +21,25 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue'
 
-const props = defineProps({
-  sessionId: { type: String, required: true },
-  originalFilename: { type: String, required: true },
-  selectedPages: { type: Array, default: () => [] },
+const props = withDefaults(defineProps<{
+  sessionId: string
+  originalFilename: string
+  selectedPages?: number[]
+}>(), {
+  selectedPages: () => [],
 })
 
-const emit = defineEmits(['download-success'])
+const emit = defineEmits<{
+  'download-success': []
+}>()
 
-const loading = ref(false)
-const error = ref(null)
+const loading = ref<boolean>(false)
+const error = ref<string | null>(null)
 
-async function download() {
+async function download(): Promise<void> {
   error.value = null
   loading.value = true
 

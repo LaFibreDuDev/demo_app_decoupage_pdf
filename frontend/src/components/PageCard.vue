@@ -26,11 +26,15 @@
   </button>
 </template>
 
-<script setup>
-defineProps({
-  page: { type: Number, required: true },
-  selected: { type: Boolean, default: false },
+<script setup lang="ts">
+withDefaults(defineProps<{
+  page: number
+  selected?: boolean
+}>(), {
+  selected: false,
 })
 
-defineEmits(['toggle'])
+defineEmits<{
+  toggle: []
+}>()
 </script>

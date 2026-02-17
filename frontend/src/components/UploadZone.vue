@@ -61,30 +61,37 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, computed } from 'vue'
 
-const emit = defineEmits(['upload-success'])
+interface UploadSuccessPayload {
+  session_id: string
+  page_count: number
+  original_filename: string
+}
 
-const fileInput = ref(null)
-const loading = ref(false)
-const error = ref(null)
-const dragCounter = ref(0)
-const isDragging = computed(() => dragCounter.value > 0)
+const emit = defineEmits<{
+  'upload-success': [payload: UploadSuccessPayload]
+}>()
+
+const fileInput = ref<HTMLInputElement | null>(null)
+const loading = ref<boolean>(false)
+const error = ref<string | null>(null)
+const dragCounter = ref<number>(0)
+const isDragging = computed<boolean>(() => dragCounter.value > 0)
 
 const maxSizeMb = parseInt(import.meta.env.VITE_UPLOAD_MAX_SIZE_MB, 10)
 const MAX_SIZE = maxSizeMb * 1024 * 1024
 
-function openFilePicker() {
+function openFilePicker(): void {
   error.value = null
-  fileInput.value.click()
+  fileInput.value?.click()
 }
 
-async function processFile(file) {
+async function processFile(file: File | undefined): Promise<void> {
   if (!file) return
   if (loading.value) return
 
-  // Validation client
   if (file.type !== 'application/pdf') {
     error.value = 'Le fichier doit être un PDF.'
     return
@@ -125,24 +132,24 @@ async function processFile(file) {
   }
 }
 
-function onFileSelected(event) {
-  const file = event.target.files[0]
-  // Reset input pour permettre re-sélection du même fichier
-  event.target.value = ''
+function onFileSelected(event: Event): void {
+  const input = event.target as HTMLInputElement
+  const file = input.files?.[0]
+  input.value = ''
   processFile(file)
 }
 
-function onDragEnter() {
+function onDragEnter(): void {
   dragCounter.value++
 }
 
-function onDragLeave() {
+function onDragLeave(): void {
   dragCounter.value--
 }
 
-function onDrop(event) {
+function onDrop(event: DragEvent): void {
   dragCounter.value = 0
-  const file = event.dataTransfer.files[0]
+  const file = event.dataTransfer?.files[0]
   processFile(file)
 }
 </script>

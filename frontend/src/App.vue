@@ -21,29 +21,27 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue'
 import UploadZone from './components/UploadZone.vue'
 import PageGrid from './components/PageGrid.vue'
 import DownloadButton from './components/DownloadButton.vue'
 
-const sessionId = ref(null)
-const pageCount = ref(0)
-const originalFilename = ref('')
-const selectedPages = ref([])
-const pageGridRef = ref(null)
+const sessionId = ref<string | null>(null)
+const pageCount = ref<number>(0)
+const originalFilename = ref<string>('')
+const selectedPages = ref<number[]>([])
+const pageGridRef = ref<InstanceType<typeof PageGrid> | null>(null)
 
-function onUploadSuccess({ session_id, page_count, original_filename }) {
-  sessionId.value = session_id
-  pageCount.value = page_count
-  originalFilename.value = original_filename
+function onUploadSuccess(payload: { session_id: string; page_count: number; original_filename: string }): void {
+  sessionId.value = payload.session_id
+  pageCount.value = payload.page_count
+  originalFilename.value = payload.original_filename
   selectedPages.value = []
 }
 
-function onDownloadSuccess() {
+function onDownloadSuccess(): void {
   selectedPages.value = []
-  if (pageGridRef.value) {
-    pageGridRef.value.clearSelection()
-  }
+  pageGridRef.value?.clearSelection()
 }
 </script>
