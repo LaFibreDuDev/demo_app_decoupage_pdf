@@ -12,8 +12,8 @@ services:
       dockerfile: nginx/Dockerfile.prod # build multi-stage : node → nginx
       args:
         - VITE_UPLOAD_MAX_SIZE_MB=${VITE_UPLOAD_MAX_SIZE_MB:-10}
-    ports:
-      - "80:80"
+    # ports:
+    #  - "80:80"
     depends_on:
       - backend
     restart: unless-stopped
