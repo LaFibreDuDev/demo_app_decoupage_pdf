@@ -32,7 +32,7 @@ Créer une application permettant à un utilisateur de :
 ### Sur le téléchargement
 - **Mode** : zip regroupant tous les fichiers.  
 - **Téléchargement** : direct depuis le navigateur.  
-- **Expiration des fichiers** : suppression automatique après 24h.
+- **Expiration des fichiers** : suppression automatique côté serveur après 24h.
 
 ### Sur la sécurité et la confidentialité
 - Les fichiers peuvent contenir des informations sensibles.  
@@ -66,7 +66,7 @@ Créer une application permettant à un utilisateur de :
 - Téléchargement en zip regroupant tous les fichiers.  
 - Sécurité et confidentialité :
   - Fichiers temporaires chiffrés sur serveur.  
-  - Suppression automatique après téléchargement ou 24h.
+  - Suppression automatique après 24h.
 
 **Pourquoi :** Expérience complète, pratique et sécurisée pour tous les utilisateurs.
 
