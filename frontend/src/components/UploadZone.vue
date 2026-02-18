@@ -5,8 +5,8 @@
       :class="[
         'border-2 border-dashed rounded-xl p-10 flex flex-col items-center gap-4 transition-colors',
         isDragging
-          ? 'border-blue-500 bg-blue-50'
-          : 'border-gray-300 bg-white hover:border-blue-400'
+          ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
+          : 'border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-800 hover:border-blue-400 dark:hover:border-primary'
       ]"
       @dragenter.prevent="onDragEnter"
       @dragleave.prevent="onDragLeave"
@@ -14,7 +14,7 @@
       @drop.prevent="onDrop"
     >
       <svg
-        class="w-12 h-12 text-gray-400"
+        class="w-12 h-12 text-gray-400 dark:text-slate-500"
         fill="none"
         stroke="currentColor"
         stroke-width="1.5"
@@ -26,11 +26,11 @@
           d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z"
         />
       </svg>
-      <p class="text-gray-600 text-sm text-center">
-        <span v-if="isDragging" class="font-medium text-blue-600">Déposez votre PDF ici</span>
+      <p class="text-gray-600 dark:text-slate-300 text-sm text-center">
+        <span v-if="isDragging" class="font-medium text-blue-600 dark:text-blue-400">Déposez votre PDF ici</span>
         <template v-else>
           Glissez-déposez un PDF ou<br />
-          <span class="text-gray-400 text-xs">Taille maximale : {{ maxSizeMb }} Mo</span>
+          <span class="text-gray-400 dark:text-slate-500 text-xs">Taille maximale : {{ maxSizeMb }} Mo</span>
         </template>
       </p>
       <button
@@ -54,7 +54,7 @@
     <!-- Message d'erreur -->
     <div
       v-if="error"
-      class="mt-3 px-4 py-2.5 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm"
+      class="mt-3 px-4 py-2.5 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg text-red-700 dark:text-red-400 text-sm"
     >
       {{ error }}
     </div>
@@ -68,6 +68,7 @@ interface UploadSuccessPayload {
   session_id: string
   page_count: number
   original_filename: string
+  file_size_mo: string
 }
 
 const emit = defineEmits<{
@@ -124,6 +125,7 @@ async function processFile(file: File | undefined): Promise<void> {
       session_id: data.session_id,
       page_count: data.page_count,
       original_filename: data.original_filename,
+      file_size_mo: (file.size / (1024 * 1024)).toFixed(1),
     })
   } catch {
     error.value = 'Impossible de contacter le serveur.'

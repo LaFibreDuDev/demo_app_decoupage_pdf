@@ -1,55 +1,73 @@
 <template>
-  <button
+  <div
+    class="relative group cursor-pointer"
+    :class="selected ? '' : 'opacity-70 hover:opacity-100 transition-all'"
     @click="$emit('toggle')"
-    :class="[
-      'relative w-full aspect-[3/4] rounded-lg border-2 overflow-hidden transition-all cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-blue-500',
-      selected
-        ? 'border-blue-500 shadow-md'
-        : 'border-gray-200 bg-white hover:border-gray-400'
-    ]"
   >
-    <!-- Thumbnail -->
-    <img
-      v-if="thumbUrl"
-      :src="thumbUrl"
-      :alt="`Page ${page}`"
-      class="absolute inset-0 w-full h-full object-cover"
-      :class="selected ? 'brightness-90' : ''"
-    />
-
-    <!-- Fallback background when no thumbnail -->
-    <span
-      v-else
-      :class="['absolute inset-0 flex flex-col items-center justify-center gap-1', selected ? 'bg-blue-50' : 'bg-white']"
+    <!-- Card -->
+    <div
+      :class="[
+        'relative aspect-[3/4] bg-white dark:bg-slate-800 rounded-xl shadow-md border-4 transition-all overflow-hidden',
+        selected
+          ? 'border-primary ring-4 ring-primary/20'
+          : 'border-transparent hover:border-slate-300 dark:hover:border-slate-600'
+      ]"
     >
-      <span :class="['text-xl font-semibold', selected ? 'text-blue-700' : 'text-gray-500']">
+      <!-- Miniature -->
+      <img
+        v-if="thumbUrl"
+        :src="thumbUrl"
+        :alt="`Aperçu page ${page}`"
+        class="w-full h-full object-cover transition-all"
+        :class="selected ? '' : 'grayscale group-hover:grayscale-0'"
+      />
+
+      <!-- Fallback sans miniature -->
+      <span
+        v-else
+        class="absolute inset-0 flex flex-col items-center justify-center gap-1 bg-slate-50 dark:bg-slate-700"
+      >
+        <span class="text-2xl font-bold text-slate-300 dark:text-slate-500">{{ page }}</span>
+      </span>
+
+      <!-- Checkmark (sélectionné) -->
+      <div
+        v-if="selected"
+        class="absolute top-3 right-3 w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white shadow-lg"
+      >
+        <span class="material-symbols-outlined text-[20px]">check</span>
+      </div>
+
+      <!-- Overlay "+" au survol (non sélectionné) -->
+      <div
+        v-else
+        class="page-overlay absolute inset-0 bg-slate-900/10 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"
+      >
+        <div class="w-12 h-12 bg-white/90 dark:bg-slate-800/90 rounded-full flex items-center justify-center text-primary shadow-xl">
+          <span class="material-symbols-outlined">add</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Numéro + label -->
+    <div class="mt-3 flex items-center justify-between px-1">
+      <span
+        :class="[
+          'text-sm font-bold px-2 py-0.5 rounded',
+          selected
+            ? 'bg-primary text-white'
+            : 'text-slate-400 border border-slate-300 dark:border-slate-700'
+        ]"
+      >
         {{ page }}
       </span>
-      <span :class="['text-xs', selected ? 'text-blue-500' : 'text-gray-400']">page</span>
-    </span>
-
-    <!-- Page number overlay (visible on top of thumbnail) -->
-    <span
-      v-if="thumbUrl"
-      class="absolute bottom-0 inset-x-0 text-center text-xs font-medium py-0.5 bg-black/40 text-white"
-    >
-      {{ page }}
-    </span>
-
-    <!-- Checkmark -->
-    <span
-      v-if="selected"
-      class="absolute top-1 right-1 w-5 h-5 bg-blue-500 rounded-full flex items-center justify-center"
-    >
-      <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
-      </svg>
-    </span>
-  </button>
+      <span v-if="selected" class="text-xs font-medium text-primary">Inclus</span>
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">
-const { page, selected = false, thumbUrl } = defineProps<{
+defineProps<{
   page: number
   selected?: boolean
   thumbUrl?: string
@@ -59,3 +77,9 @@ defineEmits<{
   toggle: []
 }>()
 </script>
+
+<style scoped>
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+</style>

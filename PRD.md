@@ -67,6 +67,7 @@ Créer une application permettant à un utilisateur de :
 - Sécurité et confidentialité :
   - Fichiers temporaires chiffrés sur serveur.  
   - Suppression automatique après 24h.
+- Changement du design en utilisant les fichiers mis à disposition dans le dossier @docs/design.
 
 **Pourquoi :** Expérience complète, pratique et sécurisée pour tous les utilisateurs.
 
