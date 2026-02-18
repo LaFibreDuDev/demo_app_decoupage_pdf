@@ -30,3 +30,9 @@ ALLOWED_ORIGINS: list[str] = [
     origin.strip()
     for origin in os.getenv("ALLOWED_ORIGINS", "http://localhost:5173").split(",")
 ]
+
+# Session key derivation secret — must be set in production (min 32 bytes)
+_raw_secret = os.getenv("SESSION_SECRET", "")
+if not _raw_secret:
+    raise RuntimeError("SESSION_SECRET must be set in the environment.")
+SESSION_SECRET: bytes = _raw_secret.encode()

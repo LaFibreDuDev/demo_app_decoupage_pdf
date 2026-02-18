@@ -1,11 +1,12 @@
 import io
+import os
 import zipfile
 
 from fastapi import APIRouter, HTTPException
 from fastapi.responses import StreamingResponse
 
+from config import TEMP_DIR
 from models import SplitRequest
-from services.crypto_service import _session_keys
 from services.pdf_service import split_pdf, split_pdf_separate
 
 router = APIRouter()
@@ -13,7 +14,8 @@ router = APIRouter()
 
 @router.post("/split")
 async def split_pdf_route(request: SplitRequest):
-    if request.session_id not in _session_keys:
+    session_dir = os.path.join(TEMP_DIR, request.session_id)
+    if not os.path.isdir(session_dir):
         raise HTTPException(status_code=404, detail="Session introuvable ou expirée.")
 
     if not request.pages:
@@ -35,8 +37,6 @@ async def split_pdf_route(request: SplitRequest):
                 zf.writestr(pdf_filename, pdf_bytes)
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
-    except KeyError:
-        raise HTTPException(status_code=404, detail="Session expirée ou introuvable.")
 
     zip_buffer.seek(0)
 

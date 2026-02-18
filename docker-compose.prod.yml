@@ -33,6 +33,7 @@ services:
       - SESSION_TTL_HOURS=${SESSION_TTL_HOURS:-24}
       - THUMB_DPI=${THUMB_DPI:-150}
       - ALLOWED_ORIGINS=${ALLOWED_ORIGINS}
+      - SESSION_SECRET=${SESSION_SECRET}
     networks:
       - pdf_app_network
     restart: unless-stopped

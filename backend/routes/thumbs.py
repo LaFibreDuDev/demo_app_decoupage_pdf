@@ -16,8 +16,6 @@ async def list_thumbnails(session_id: str):
         urls = generate_thumbnails(session_id)
     except FileNotFoundError:
         return JSONResponse(status_code=404, content={"detail": "Session introuvable."})
-    except KeyError:
-        return JSONResponse(status_code=404, content={"detail": "Session expirée ou introuvable."})
     return {"urls": urls}
 
 
