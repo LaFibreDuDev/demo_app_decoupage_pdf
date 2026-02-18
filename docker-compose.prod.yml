@@ -1,12 +1,15 @@
 services:
 
   # ── Frontend (statique) + reverse proxy ───────────────────────────────────
-  # Build multi-stage : Vite compile le frontend, nginx le sert.
-  # Dockploy expose ce service via HTTPS — ici on écoute en HTTP sur 80.
+  # Ce service contient DEUX choses grâce au build multi-stage (nginx/Dockerfile.prod) :
+  #   1. Le frontend Vue/Vite compilé en fichiers statiques (npm run build)
+  #   2. Nginx qui sert ces fichiers et proxifie l'API vers le backend
+  # Il n'y a donc pas de service "frontend" séparé en prod : il est intégré ici.
+  # Dockploy expose ce service via HTTPS — nginx écoute en HTTP sur 80.
   nginx:
     build:
       context: .                        # contexte = racine du projet
-      dockerfile: nginx/Dockerfile.prod
+      dockerfile: nginx/Dockerfile.prod # build multi-stage : node → nginx
     ports:
       - "80:80"
     depends_on:
