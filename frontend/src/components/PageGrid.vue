@@ -31,10 +31,10 @@ const selectedPages = ref<number[]>([])
 const thumbUrls = ref<string[]>([])
 
 const ZOOM_COLS: Record<number, string> = {
-  1: 'grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8',
+  1: 'grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5 gap-8',
   2: 'grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-8',
-  3: 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8',
-  4: 'grid grid-cols-2 gap-8',
+  3: 'grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-8',
+  4: 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-8',
   5: 'grid grid-cols-1 gap-8',
 }
 
