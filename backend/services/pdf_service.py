@@ -92,3 +92,42 @@ def split_pdf(session_id: str, original_filename: str, pages: list[int]) -> tupl
     output_filename = f"{original_filename}_page{page_str}.pdf"
 
     return pdf_bytes, output_filename
+
+
+def split_pdf_separate(session_id: str, original_filename: str, pages: list[int]) -> list[tuple[bytes, str]]:
+    """Decrypt session PDF, extract each requested page as a separate PDF.
+
+    Returns:
+        List of (pdf_bytes, output_filename) tuples, one per page.
+
+    Raises:
+        ValueError if a page number is out of range.
+    """
+    session_dir = os.path.join(TEMP_DIR, session_id)
+    enc_path = os.path.join(session_dir, "original.pdf.enc")
+
+    with open(enc_path, "rb") as f:
+        encrypted = f.read()
+
+    plaintext = decrypt_file(session_id, encrypted)
+
+    results = []
+    with pikepdf.open(io.BytesIO(plaintext)) as pdf:
+        total_pages = len(pdf.pages)
+
+        for p in pages:
+            if p < 1 or p > total_pages:
+                raise ValueError(f"Numéro de page invalide : {p} (le PDF a {total_pages} pages).")
+
+        for p in pages:
+            new_pdf = pikepdf.Pdf.new()
+            new_pdf.pages.append(pdf.pages[p - 1])
+
+            output = io.BytesIO()
+            new_pdf.save(output)
+            pdf_bytes = output.getvalue()
+
+            output_filename = f"{original_filename}_page{p}.pdf"
+            results.append((pdf_bytes, output_filename))
+
+    return results

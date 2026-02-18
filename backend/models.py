@@ -1,3 +1,5 @@
+from typing import Literal
+
 from pydantic import BaseModel
 
 
@@ -11,3 +13,4 @@ class SplitRequest(BaseModel):
     session_id: str
     original_filename: str
     pages: list[int]
+    output_mode: Literal["merged", "separate"] = "merged"

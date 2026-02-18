@@ -1,4 +1,4 @@
-## ADDED Requirements
+## MODIFIED Requirements
 
 ### Requirement: Endpoint POST /split — réception et validation
 Le backend SHALL exposer `POST /split` acceptant un corps JSON `{ session_id, original_filename, pages, output_mode? }`. Le champ `output_mode` est optionnel et MUST valoir `"merged"` ou `"separate"` ; sa valeur par défaut MUST être `"merged"`. Il MUST vérifier que la session existe en mémoire (clé AES présente) et que la liste `pages` est non vide. En cas d'échec, il MUST retourner une erreur HTTP appropriée.
@@ -50,14 +50,6 @@ Le backend SHALL nommer les fichiers PDF extraits selon le mode de sortie. En mo
 #### Scenario: Mode "separate" — plusieurs pages
 - **WHEN** `pages: [1, 3, 5]`, `output_mode: "separate"` et `original_filename: "doc"`
 - **THEN** le zip contient `doc_page1.pdf`, `doc_page3.pdf` et `doc_page5.pdf`
-
-### Requirement: Suppression de la session après envoi du zip
-Le backend SHALL supprimer le répertoire de session et la clé AES en mémoire immédiatement après la fin du streaming du zip, via un `BackgroundTask`. Aucun fichier temporaire de la session ne MUST subsister sur disque après la complétion du téléchargement.
-
-#### Scenario: Suppression post-streaming
-- **WHEN** le streaming du zip est terminé
-- **THEN** le répertoire `/tmp/pdf_splitter/{session_id}/` n'existe plus
-- **THEN** la clé AES correspondante est retirée du dictionnaire en mémoire
 
 ### Requirement: Déclenchement du téléchargement depuis le frontend
 Le frontend SHALL envoyer `POST /api/split` avec `{ session_id, original_filename, pages, output_mode }` au clic sur le bouton de téléchargement, initier le téléchargement du zip via un lien temporaire (`URL.createObjectURL`), et afficher un indicateur de chargement pendant la requête. Le bouton MUST être désactivé pendant ce temps.

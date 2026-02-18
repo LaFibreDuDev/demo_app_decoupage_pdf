@@ -6,7 +6,7 @@ from fastapi.responses import StreamingResponse
 
 from models import SplitRequest
 from services.crypto_service import _session_keys
-from services.pdf_service import split_pdf
+from services.pdf_service import split_pdf, split_pdf_separate
 
 router = APIRouter()
 
@@ -19,16 +19,23 @@ async def split_pdf_route(request: SplitRequest):
     if not request.pages:
         raise HTTPException(status_code=400, detail="Aucune page sélectionnée.")
 
+    zip_buffer = io.BytesIO()
     try:
-        pdf_bytes, pdf_filename = split_pdf(
-            request.session_id, request.original_filename, request.pages
-        )
+        with zipfile.ZipFile(zip_buffer, "w", zipfile.ZIP_DEFLATED) as zf:
+            if request.output_mode == "separate":
+                entries = split_pdf_separate(
+                    request.session_id, request.original_filename, request.pages
+                )
+                for pdf_bytes, pdf_filename in entries:
+                    zf.writestr(pdf_filename, pdf_bytes)
+            else:
+                pdf_bytes, pdf_filename = split_pdf(
+                    request.session_id, request.original_filename, request.pages
+                )
+                zf.writestr(pdf_filename, pdf_bytes)
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
 
-    zip_buffer = io.BytesIO()
-    with zipfile.ZipFile(zip_buffer, "w", zipfile.ZIP_DEFLATED) as zf:
-        zf.writestr(pdf_filename, pdf_bytes)
     zip_buffer.seek(0)
 
     zip_filename = f"{request.original_filename}_split.zip"

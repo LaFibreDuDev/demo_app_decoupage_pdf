@@ -1,5 +1,31 @@
 <template>
   <div class="flex flex-col items-center gap-3">
+    <!-- Sélecteur de mode de sortie -->
+    <div class="flex rounded-lg border border-gray-200 overflow-hidden text-sm">
+      <button
+        @click="outputMode = 'merged'"
+        :class="[
+          'px-4 py-2 font-medium transition-colors',
+          outputMode === 'merged'
+            ? 'bg-blue-600 text-white'
+            : 'bg-white text-gray-600 hover:bg-gray-50'
+        ]"
+      >
+        Fichier fusionné
+      </button>
+      <button
+        @click="outputMode = 'separate'"
+        :class="[
+          'px-4 py-2 font-medium transition-colors border-l border-gray-200',
+          outputMode === 'separate'
+            ? 'bg-blue-600 text-white'
+            : 'bg-white text-gray-600 hover:bg-gray-50'
+        ]"
+      >
+        Un fichier par page
+      </button>
+    </div>
+
     <button
       @click="download"
       :disabled="selectedPages.length === 0 || loading"
@@ -9,7 +35,7 @@
       <svg v-else class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5m0 0l5-5m-5 5V4" />
       </svg>
-      {{ loading ? 'Découpage en cours…' : `Télécharger le ZIP (${selectedPages.length} page(s))` }}
+      {{ loading ? 'Découpage en cours…' : labelButton }}
     </button>
 
     <div
@@ -22,7 +48,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 
 const { sessionId, originalFilename, selectedPages = [] } = defineProps<{
   sessionId: string
@@ -36,6 +62,15 @@ const emit = defineEmits<{
 
 const loading = ref<boolean>(false)
 const error = ref<string | null>(null)
+const outputMode = ref<'merged' | 'separate'>('merged')
+
+const labelButton = computed(() => {
+  const n = selectedPages.length
+  if (outputMode.value === 'separate') {
+    return `Télécharger le ZIP (${n} fichier${n > 1 ? 's' : ''})`
+  }
+  return `Télécharger le ZIP (${n} page${n > 1 ? 's' : ''} fusionnée${n > 1 ? 's' : ''})`
+})
 
 async function download(): Promise<void> {
   error.value = null
@@ -49,6 +84,7 @@ async function download(): Promise<void> {
         session_id: sessionId,
         original_filename: originalFilename,
         pages: selectedPages,
+        output_mode: outputMode.value,
       }),
     })
 
@@ -66,6 +102,7 @@ async function download(): Promise<void> {
     a.click()
     URL.revokeObjectURL(url)
 
+    outputMode.value = 'merged'
     emit('download-success')
   } catch {
     error.value = 'Impossible de contacter le serveur.'
