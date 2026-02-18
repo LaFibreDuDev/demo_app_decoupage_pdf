@@ -1,0 +1,27 @@
+services:
+
+  # ── Frontend (statique) + reverse proxy ───────────────────────────────────
+  # Build multi-stage : Vite compile le frontend, nginx le sert.
+  # Dockploy expose ce service via HTTPS — ici on écoute en HTTP sur 80.
+  nginx:
+    build:
+      context: .                        # contexte = racine du projet
+      dockerfile: nginx/Dockerfile.prod
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+  # ── Backend FastAPI ────────────────────────────────────────────────────────
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.prod
+    volumes:
+      - pdf_sessions:/tmp/pdf_splitter  # persistance des sessions
+    env_file: ./backend/.env.prod
+    restart: unless-stopped
+
+volumes:
+  pdf_sessions:

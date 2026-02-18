@@ -1,5 +1,6 @@
 # Variables d'environnement (ne pas versionner)
 backend/.env
+backend/.env.prod
 frontend/.env
 
 # Fichiers temporaires Python
