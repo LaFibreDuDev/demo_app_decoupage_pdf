@@ -61,6 +61,7 @@ Créer une application permettant à un utilisateur de :
 - Drag & drop pour upload.  
 - Aperçu des pages (miniatures).  
 - Sélection multi-pages intuitive.  
+- Possibilité de choisir entre une fusion des pages sélectionnées ou des fichiers séparés.
 - Renommage automatique des fichiers.  
 - Téléchargement en zip regroupant tous les fichiers.  
 - Sécurité et confidentialité :
