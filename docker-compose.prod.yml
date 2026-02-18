@@ -16,6 +16,8 @@ services:
     #  - "80:80"
     depends_on:
       - backend
+    networks:
+      - app_network
     restart: unless-stopped
 
   # ── Backend FastAPI ────────────────────────────────────────────────────────
@@ -31,7 +33,12 @@ services:
       - SESSION_TTL_HOURS=${SESSION_TTL_HOURS:-24}
       - THUMB_DPI=${THUMB_DPI:-150}
       - ALLOWED_ORIGINS=${ALLOWED_ORIGINS}
+    networks:
+      - app_network
     restart: unless-stopped
 
 volumes:
   pdf_sessions:
+
+networks:
+  app_network:
