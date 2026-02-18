@@ -10,6 +10,8 @@ services:
     build:
       context: .                        # contexte = racine du projet
       dockerfile: nginx/Dockerfile.prod # build multi-stage : node → nginx
+      args:
+        - VITE_UPLOAD_MAX_SIZE_MB=${VITE_UPLOAD_MAX_SIZE_MB:-10}
     ports:
       - "80:80"
     depends_on:
@@ -23,7 +25,12 @@ services:
       dockerfile: Dockerfile.prod
     volumes:
       - pdf_sessions:/tmp/pdf_splitter  # persistance des sessions
-    env_file: ./backend/.env.prod
+    environment:
+      - UPLOAD_MAX_SIZE_MB=${UPLOAD_MAX_SIZE_MB:-10}
+      - TEMP_DIR=${TEMP_DIR:-/tmp/pdf_splitter}
+      - SESSION_TTL_HOURS=${SESSION_TTL_HOURS:-24}
+      - THUMB_DPI=${THUMB_DPI:-150}
+      - ALLOWED_ORIGINS=${ALLOWED_ORIGINS}
     restart: unless-stopped
 
 volumes:

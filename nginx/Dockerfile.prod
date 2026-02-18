@@ -7,6 +7,11 @@ COPY frontend/package.json frontend/package-lock.json* ./
 RUN npm ci
 
 COPY frontend/ .
+
+# Variable injectée au build via `docker-compose build.args` (Dokploy)
+ARG VITE_UPLOAD_MAX_SIZE_MB=10
+ENV VITE_UPLOAD_MAX_SIZE_MB=$VITE_UPLOAD_MAX_SIZE_MB
+
 RUN npm run build
 
 # ── Stage 2 : nginx avec les fichiers statiques ────────────────────────────
