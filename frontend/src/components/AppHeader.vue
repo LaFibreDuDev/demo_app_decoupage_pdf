@@ -25,10 +25,10 @@
         <span class="material-symbols-outlined dark:hidden">dark_mode</span>
         <span class="material-symbols-outlined hidden dark:block">light_mode</span>
       </button>
-      <div class="hidden md:block h-8 w-px bg-slate-200 dark:bg-slate-800"></div>
-      <button class="hidden md:flex items-center gap-2 px-4 py-2 text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-primary dark:hover:text-primary transition-colors">
+      <div class="h-8 w-px bg-slate-200 dark:bg-slate-800"></div>
+      <button class="flex items-center gap-2 px-2 md:px-4 py-2 text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-primary dark:hover:text-primary transition-colors">
         <span class="material-symbols-outlined text-[20px]">help</span>
-        Aide
+        <span class="hidden md:inline">Aide</span>
       </button>
     </div>
   </header>
