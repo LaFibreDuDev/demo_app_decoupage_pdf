@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html class="light" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>PDF Splitter with Security Info</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,typography,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#2563eb",
+                        "background-light": "#f8fafc",
+                        "background-dark": "#0f172a",
+                    },
+                    fontFamily: {
+                        display: ["Inter", "sans-serif"],
+                    },
+                    borderRadius: {
+                        DEFAULT: "0.75rem",
+                    },
+                },
+            },
+        };
+    </script>
+<style type="text/tailwindcss">
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+        }
+        .dark .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #334155;
+        }
+        .page-card:hover .page-overlay {
+            opacity: 1;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="font-display bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen flex flex-col transition-colors duration-300">
+<header class="h-16 border-b border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md flex items-center justify-between px-6 sticky top-0 z-50">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 bg-primary rounded-xl flex items-center justify-center text-white">
+<span class="material-symbols-outlined">content_cut</span>
+</div>
+<h1 class="text-xl font-bold tracking-tight">Découpeur <span class="text-primary">PDF</span></h1>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" onclick="document.documentElement.classList.toggle('dark')">
+<span class="material-symbols-outlined dark:hidden">dark_mode</span>
+<span class="material-symbols-outlined hidden dark:block">light_mode</span>
+</button>
+<div class="h-8 w-px bg-slate-200 dark:bg-slate-800"></div>
+<button class="flex items-center gap-2 px-4 py-2 text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-primary dark:hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]">help</span>
+            Aide
+        </button>
+</div>
+</header>
+<main class="flex flex-1 overflow-hidden">
+<aside class="w-80 border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 flex flex-col gap-8 overflow-y-auto">
+<section>
+<h2 class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-4">Configuration</h2>
+<div class="space-y-4">
+<div class="p-4 rounded-xl border-2 border-primary bg-primary/5 dark:bg-primary/10">
+<label class="flex items-center gap-3 cursor-pointer">
+<input checked="" class="w-4 h-4 text-primary focus:ring-primary border-slate-300 dark:border-slate-700" name="split-mode" type="radio"/>
+<div>
+<p class="text-sm font-semibold">Fichier fusionné</p>
+<p class="text-xs text-slate-500 dark:text-slate-400">Extraire dans un seul PDF</p>
+</div>
+</label>
+</div>
+<div class="p-4 rounded-xl border border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 transition-all">
+<label class="flex items-center gap-3 cursor-pointer">
+<input class="w-4 h-4 text-primary focus:ring-primary border-slate-300 dark:border-slate-700" name="split-mode" type="radio"/>
+<div>
+<p class="text-sm font-semibold">Fichiers individuels</p>
+<p class="text-xs text-slate-500 dark:text-slate-400">Un fichier par page extraite</p>
+</div>
+</label>
+</div>
+</div>
+</section>
+<section>
+<div class="flex justify-between items-center mb-4">
+<h2 class="text-xs font-bold uppercase tracking-wider text-slate-500">Sélection</h2>
+<button class="text-xs font-semibold text-primary hover:underline">Tout sélectionner</button>
+</div>
+<div class="flex flex-wrap gap-2">
+<button class="px-3 py-1.5 text-xs font-medium rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">Pages paires</button>
+<button class="px-3 py-1.5 text-xs font-medium rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">Pages impaires</button>
+<button class="px-3 py-1.5 text-xs font-medium rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">Réinitialiser</button>
+</div>
+</section>
+<section class="border-t border-slate-100 dark:border-slate-800 pt-6">
+<h2 class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">verified_user</span>
+                Sécurité &amp; Confidentialité
+            </h2>
+<div class="space-y-3">
+<div class="flex items-start gap-3 group">
+<div class="mt-0.5 w-7 h-7 rounded-lg bg-green-500/10 flex items-center justify-center text-green-600 dark:text-green-500">
+<span class="material-symbols-outlined text-[18px]">lock</span>
+</div>
+<p class="text-xs leading-relaxed text-slate-600 dark:text-slate-400">
+                        Fichiers chiffrés sur le serveur
+                    </p>
+</div>
+<div class="flex items-start gap-3 group">
+<div class="mt-0.5 w-7 h-7 rounded-lg bg-orange-500/10 flex items-center justify-center text-orange-600 dark:text-orange-500">
+<span class="material-symbols-outlined text-[18px]">history</span>
+</div>
+<p class="text-xs leading-relaxed text-slate-600 dark:text-slate-400">
+                        Suppression automatique après 24h
+                    </p>
+</div>
+</div>
+</section>
+<div class="mt-auto space-y-4 pt-4">
+<div class="p-4 bg-slate-50 dark:bg-slate-800/50 rounded-xl">
+<div class="flex justify-between text-sm mb-2">
+<span class="text-slate-500">Sélectionné :</span>
+<span class="font-bold">4 pages</span>
+</div>
+<div class="flex justify-between text-sm">
+<span class="text-slate-500">Taille estimée :</span>
+<span class="font-bold">1.2 Mo</span>
+</div>
+</div>
+<button class="w-full bg-primary hover:bg-blue-700 text-white font-bold py-4 px-6 rounded-2xl shadow-lg shadow-primary/20 flex items-center justify-center gap-2 transition-all active:scale-[0.98]">
+<span class="material-symbols-outlined">download</span>
+                Télécharger (4)
+            </button>
+</div>
+</aside>
+<div class="flex-1 flex flex-col h-full bg-background-light dark:bg-background-dark overflow-hidden">
+<div class="px-8 py-4 flex items-center justify-between border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-slate-400">description</span>
+<span class="font-medium truncate max-w-[300px]">facture_materiel_net_2023.pdf</span>
+<span class="px-2 py-0.5 bg-slate-100 dark:bg-slate-800 text-[10px] font-bold rounded uppercase text-slate-500">8 pages</span>
+</div>
+<div class="flex items-center gap-2">
+<button class="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg text-slate-500 transition-colors">
+<span class="material-symbols-outlined">zoom_out</span>
+</button>
+<span class="text-sm font-medium text-slate-400 px-2">80%</span>
+<button class="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg text-slate-500 transition-colors">
+<span class="material-symbols-outlined">zoom_in</span>
+</button>
+</div>
+</div>
+<div class="flex-1 overflow-y-auto p-8 custom-scrollbar">
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-8">
+<div class="relative group cursor-pointer">
+<div class="page-card relative aspect-[3/4] bg-white dark:bg-slate-800 rounded-xl shadow-md border-4 border-primary ring-4 ring-primary/20 transition-all overflow-hidden">
+<img alt="Aperçu du document page 1" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAsiPQApFr60mv_WnA8i6GfXoB2_WjN6uWUzo1yksFuUJRJa8r4lkdWomB-HmCszLgg68Ich5tcg_DJPJj0BJWV5xu45OKl_GSWusP0e5iMlDn3ivFgbbMVRf_C8qHwDSrd13mGy036zpu0OfvFrX8_n-vd2emKy75T-st1LuReAPgTGNypCDfcyhv9HC45LUC_9iXcv5j7cXKDS0hTBn8X1M9FCdW6GC4QjwAluXxF0598bcG7c9KnQNsy7EN8zdGMAuxEJY8jXMM"/>
+<div class="absolute top-3 right-3 w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white shadow-lg">
+<span class="material-symbols-outlined text-[20px]">check</span>
+</div>
+</div>
+<div class="mt-3 flex items-center justify-between px-1">
+<span class="text-sm font-bold bg-primary text-white px-2 py-0.5 rounded">1</span>
+<span class="text-xs font-medium text-primary">Inclus</span>
+</div>
+</div>
+<div class="relative group cursor-pointer">
+<div class="page-card relative aspect-[3/4] bg-white dark:bg-slate-800 rounded-xl shadow-md border-4 border-primary ring-4 ring-primary/20 transition-all overflow-hidden">
+<img alt="Aperçu du document page 2" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAzq-QxyYV0fzfj5tyx4clEfg0oEAXZE6Y5jjSENBP66Se_KbE6zPSsAp773G41nts18FGaXXXnqDKS5MS_300HeipzKExE2etLa8NEvd7nR_NKPX7hpcDVtQFQJQaDDTVi_gQHwiCt4RrLlKOVU10Fw6hLCXzab-Z6xmws2S-ULPSqMKM0qpNmJZuzJ_T5XECHtbVVwtWGeouGAeaosj6pX0a_eYO_JdlfBFTtchBSl5Mqo-6daTGvL7LJHKmv6winPU5C0M7RYOE"/>
+<div class="absolute top-3 right-3 w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white shadow-lg">
+<span class="material-symbols-outlined text-[20px]">check</span>
+</div>
+</div>
+<div class="mt-3 flex items-center justify-between px-1">
+<span class="text-sm font-bold bg-primary text-white px-2 py-0.5 rounded">2</span>
+<span class="text-xs font-medium text-primary">Inclus</span>
+</div>
+</div>
+<div class="relative group cursor-pointer opacity-70 hover:opacity-100 transition-all">
+<div class="page-card relative aspect-[3/4] bg-white dark:bg-slate-800 rounded-xl shadow-md border-4 border-transparent hover:border-slate-300 dark:hover:border-slate-600 transition-all overflow-hidden">
+<img alt="Aperçu du document page 3" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBl4ybJ04CcFDFJEkPjinGNuuQlZJvdh57q6xCBiofTbcm3Wye5Ug5VAdAPvOmVnD3Ylc_Jfpsb71WvnWQZNoNhHx10eFCr5clDrvv-cnvrIUUeii6iYThWsCG1Dxdq0Hj1UNRWSV6JsPG9vC3_3wQNAyRNCBxfPmjK0hZyE_5hQHuJzg0kmAS4caSABayxmwDHg0Ug_IBNa_Alj5vyAL6wuPZIJTb1DvXxnHxA99hHFViwID4S5VpWfMAvrmRNYDarKVFUReWtmYQ"/>
+<div class="page-overlay absolute inset-0 bg-slate-900/10 opacity-0 transition-opacity flex items-center justify-center">
+<div class="w-12 h-12 bg-white/90 dark:bg-slate-800/90 rounded-full flex items-center justify-center text-primary shadow-xl">
+<span class="material-symbols-outlined">add</span>
+</div>
+</div>
+</div>
+<div class="mt-3 flex items-center justify-between px-1">
+<span class="text-sm font-bold text-slate-400 px-2 py-0.5 rounded border border-slate-300 dark:border-slate-700">3</span>
+</div>
+</div>
+<div class="relative group cursor-pointer">
+<div class="page-card relative aspect-[3/4] bg-white dark:bg-slate-800 rounded-xl shadow-md border-4 border-primary ring-4 ring-primary/20 transition-all overflow-hidden">
+<img alt="Aperçu du document page 4" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCtE3kG9C0PiVjBUnenAG-rEb7CGLxE2e2zdPed3ZPIDAwZpXxXg_tD3WCIv6UklhUr0BpEFYCmZKQ6e6pK2Bn4rSMZ7Sed_vyuyH6C85gKU5ovkGaamrZC7SVpzgrEa3xm9XeNj_kdwULIhbHLCAWqq8zt4AEatvfUftU2t0-JnpcPJAqehWJiK_rq-JLTUjLVvpYtvt_0MxuV6HtLJvEafbsRWxbX_SfiOrqLTrm111_apr4MscZep5o5ue0AkS5fMB-BqQwSrIY"/>
+<div class="absolute top-3 right-3 w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white shadow-lg">
+<span class="material-symbols-outlined text-[20px]">check</span>
+</div>
+</div>
+<div class="mt-3 flex items-center justify-between px-1">
+<span class="text-sm font-bold bg-primary text-white px-2 py-0.5 rounded">4</span>
+<span class="text-xs font-medium text-primary">Inclus</span>
+</div>
+</div>
+<div class="relative group cursor-pointer">
+<div class="page-card relative aspect-[3/4] bg-white dark:bg-slate-800 rounded-xl shadow-md border-4 border-primary ring-4 ring-primary/20 transition-all overflow-hidden">
+<img alt="Aperçu du document page 5" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA8GsmNUhs-cRE91AnT-IuvIVLL7e3cWOAnDEFks34SNeF_Jdnp6dgz6i8gXqZtP2oxcjLMKEIpvFqahKcW2KGfsDlwSHjHoCHgBXb3Zv6wYMSFn4B5VgkmYh3fPSegmFCy2w2DiJPhaykG_9Ekw2pDA6W8DYFiO4-j4G9FqrwTGB0A7fUWlewkn4ruT-CBpzJjP3jzTY7QVCXyI7zAnMdR7KOrGQnSUoCL5ORSzrRrWOWM1kw0t0it_C9zWEIKNk4-Lo7w62BKeE8"/>
+<div class="absolute top-3 right-3 w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white shadow-lg">
+<span class="material-symbols-outlined text-[20px]">check</span>
+</div>
+</div>
+<div class="mt-3 flex items-center justify-between px-1">
+<span class="text-sm font-bold bg-primary text-white px-2 py-0.5 rounded">5</span>
+<span class="text-xs font-medium text-primary">Inclus</span>
+</div>
+</div>
+<div class="relative group cursor-pointer opacity-70 hover:opacity-100 transition-all">
+<div class="page-card relative aspect-[3/4] bg-white dark:bg-slate-800 rounded-xl shadow-md border-4 border-transparent hover:border-slate-300 dark:hover:border-slate-600 transition-all overflow-hidden">
+<img alt="Aperçu du document page 6" class="w-full h-full object-cover grayscale" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBVfA_PQb3lLfdMIl_SIB6WCyDQRIsLOeFZ4h0FKo3TpUZ1ftygARzoKulOWRz_Zed2hbO-_-5H4G2FIGlzPlPGgYom3qfvlPlneORX9cnovx_O7B6cYauXVHC_tijitj8zK5meikOCcoLQB-qwTwTSGKX_bgS_rF4Ea7CQt5dEI5HnvOLQNCfQfNBEz_ehjbxe7jf66CpLiqqIheQ0N8idIdoE9xmX5Ef1dr6IrTIwsfe7U6UggO_KpbAlxMA4LcOjJvmcarQl_Xs"/>
+</div>
+<div class="mt-3 flex items-center justify-between px-1">
+<span class="text-sm font-bold text-slate-400 px-2 py-0.5 rounded border border-slate-300 dark:border-slate-700">6</span>
+</div>
+</div>
+<div class="relative group cursor-pointer opacity-70 hover:opacity-100 transition-all">
+<div class="page-card relative aspect-[3/4] bg-white dark:bg-slate-800 rounded-xl shadow-md border-4 border-transparent hover:border-slate-300 dark:hover:border-slate-600 transition-all overflow-hidden">
+<img alt="Aperçu du document page 7" class="w-full h-full object-cover grayscale" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAJJcrmsLwYDwxA612BJQN4r5XXU5Y6Q9PM_uUAB0oM7vTdZR7Xatgl-P8woLkS2LqKwHAkX5UT6ujVHbV6IYBdSqWzuXFbTaJ83cg9WH2KceNSXY_tczdZyOqtI9tidZTyb9Hj_piWchlds38c5nvaz-9yqI1s9RPt_y2vYtvtJNh54RsJLrK88OOfUuJD4H0LIlz3pMXSA05em8B7F1fFq1-afkOaacU4iodr40iM-S9We8TJUAMKT2oBmCdhjfEHzw-w-7Yo4mc"/>
+</div>
+<div class="mt-3 flex items-center justify-between px-1">
+<span class="text-sm font-bold text-slate-400 px-2 py-0.5 rounded border border-slate-300 dark:border-slate-700">7</span>
+</div>
+</div>
+<div class="relative group cursor-pointer opacity-70 hover:opacity-100 transition-all">
+<div class="page-card relative aspect-[3/4] bg-white dark:bg-slate-800 rounded-xl shadow-md border-4 border-transparent hover:border-slate-300 dark:hover:border-slate-600 transition-all overflow-hidden">
+<img alt="Aperçu du document page 8" class="w-full h-full object-cover grayscale" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD-TERCRWmc08oyV5-zVmpmReKURYqo8YU5o4eACLawB_prcIf0BxGf3LHJ56NSM1Y1PQxfFZPR3H1iMS0ZaVGDZ_aLM02ZgxQ7qJJwYkruKTd6-pEcmo5DZXiHCP8o92R7JaiwqT1yMNsnTqSSEaf14cNZke2-_gQF9nNeNLwGr20dKRRy2OxbbpHxlsaiX7Q2mFKuffsfrDzWfY1RuWu_rSZ5fpDx5PolTvp2kYXJI6SIVYxrUKlvQRaFIU546m5AjRupFem_PRs"/>
+</div>
+<div class="mt-3 flex items-center justify-between px-1">
+<span class="text-sm font-bold text-slate-400 px-2 py-0.5 rounded border border-slate-300 dark:border-slate-700">8</span>
+</div>
+</div>
+<div class="relative group border-2 border-dashed border-slate-300 dark:border-slate-700 rounded-xl aspect-[3/4] flex flex-col items-center justify-center gap-4 hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors cursor-pointer">
+<div class="w-12 h-12 bg-slate-100 dark:bg-slate-800 rounded-full flex items-center justify-center text-slate-400 group-hover:text-primary transition-colors">
+<span class="material-symbols-outlined">add</span>
+</div>
+<span class="text-xs font-bold text-slate-400 group-hover:text-primary transition-colors uppercase tracking-widest">Ajouter PDF</span>
+</div>
+</div>
+</div>
+</div>
+</main>
+<div class="fixed bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-4 bg-white dark:bg-slate-800 px-6 py-3 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-700 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-all">
+<div class="w-8 h-8 rounded-full bg-green-500/10 flex items-center justify-center text-green-600">
+<span class="material-symbols-outlined text-[20px]">check_circle</span>
+</div>
+<p class="text-sm font-medium">Document chargé avec succès (2.4 Mo)</p>
+<button class="p-1 hover:bg-slate-100 dark:hover:bg-slate-700 rounded text-slate-400">
+<span class="material-symbols-outlined text-[18px]">close</span>
+</button>
+</div>
+
+</body></html>
