@@ -1,5 +1,5 @@
 ### Requirement: Header sticky avec logo et actions globales
-L'application SHALL afficher un header fixe en haut de page contenant : le logo de l'application (icône ciseau + titre "Découpeur PDF"), un bouton de toggle dark/light mode, et un bouton "Aide". Le header MUST rester visible lors du défilement vertical de la grille de pages.
+L'application SHALL afficher un header fixe en haut de page contenant : le logo de l'application (icône ciseau + titre "Découpeur PDF"), un bouton de toggle dark/light mode, et un bouton "Aide". Le header MUST rester visible lors du défilement vertical de la grille de pages. Le bouton "Aide" MUST ouvrir la modale d'aide lors d'un clic.
 
 #### Scenario: Header visible au scroll
 - **WHEN** l'utilisateur fait défiler la liste de pages vers le bas
@@ -8,6 +8,10 @@ L'application SHALL afficher un header fixe en haut de page contenant : le logo 
 #### Scenario: Affichage du logo et du titre
 - **WHEN** l'application est chargée
 - **THEN** le logo (icône + texte "Découpeur PDF") est visible dans le header
+
+#### Scenario: Clic sur le bouton Aide ouvre la modale
+- **WHEN** l'utilisateur clique sur le bouton "Aide" dans le header
+- **THEN** la modale d'aide s'affiche
 
 ### Requirement: Layout sidebar + zone principale
 L'interface principale SHALL utiliser un layout deux colonnes : une sidebar gauche fixe et une zone principale scrollable. La sidebar MUST avoir une largeur fixe (320px) et ne doit pas défiler avec le contenu de la grille. La zone principale MUST occuper l'espace restant.
