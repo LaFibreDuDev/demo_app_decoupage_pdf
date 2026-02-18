@@ -22,13 +22,15 @@
         :class="selected ? '' : 'grayscale group-hover:grayscale-0'"
       />
 
-      <!-- Fallback sans miniature -->
-      <span
+      <!-- Skeleton pendant le chargement de la miniature -->
+      <div
         v-else
-        class="absolute inset-0 flex flex-col items-center justify-center gap-1 bg-slate-50 dark:bg-slate-700"
+        class="absolute inset-0 animate-pulse bg-slate-200 dark:bg-slate-700"
       >
-        <span class="text-2xl font-bold text-slate-300 dark:text-slate-500">{{ page }}</span>
-      </span>
+        <span class="absolute top-2 left-2 text-xs font-bold px-1.5 py-0.5 rounded bg-slate-300/70 dark:bg-slate-600/70 text-slate-500 dark:text-slate-400">
+          {{ page }}
+        </span>
+      </div>
 
       <!-- Checkmark (sélectionné) -->
       <div

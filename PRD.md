@@ -68,6 +68,12 @@ Créer une application permettant à un utilisateur de :
   - Fichiers temporaires chiffrés sur serveur.  
   - Suppression automatique après 24h.
 - Changement du design en utilisant les fichiers mis à disposition dans le dossier @docs/design.
+- Ajout de la possibilité de choisir entre un thème clair et un thème sombre.
+- Affichage d’une notification ou d’un toast après le téléchargement d’un fichier, indiquant le nom du fichier et sa taille.
+- Affichage d’une barre latérale (sidebar) avec des options supplémentaires ou des informations sur l’application.
+- Amélioration de l’interface utilisateur pour une meilleure expérience sur mobile (responsive design).
+- Ajout d'un skeleton sur les cards pendant le chargement des miniatures des pages pour améliorer l'expérience utilisateur.
+- Ajout d'une barre de progression pendant l'upload pour informer l'utilisateur de l'avancement du téléchargement du fichier PDF.
 
 **Pourquoi :** Expérience complète, pratique et sécurisée pour tous les utilisateurs.
 
