@@ -33,6 +33,7 @@
             :zoom-max="ZOOM_MAX"
             @zoom-in="zoomLevel = Math.min(zoomLevel + 1, ZOOM_MAX)"
             @zoom-out="zoomLevel = Math.max(zoomLevel - 1, ZOOM_MIN)"
+            @new-pdf="resetSession"
           />
           <PageGrid
             ref="pageGridRef"
@@ -125,5 +126,14 @@ function onUploadSuccess(payload: {
 function onDownloadSuccess(): void {
   selectedPages.value = []
   pageGridRef.value?.clearSelection()
+}
+
+function resetSession(): void {
+  sessionId.value = null
+  pageCount.value = 0
+  originalFilename.value = ''
+  selectedPages.value = []
+  zoomLevel.value = 3
+  sidebarOpen.value = false
 }
 </script>

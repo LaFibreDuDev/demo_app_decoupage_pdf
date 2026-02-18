@@ -23,6 +23,17 @@
       >
         <span class="material-symbols-outlined">zoom_in</span>
       </button>
+
+      <div class="h-6 w-px bg-slate-200 dark:bg-slate-700 mx-1"></div>
+
+      <button
+        @click="$emit('new-pdf')"
+        class="flex items-center gap-1.5 px-2 md:px-3 py-2 rounded-lg text-slate-500 hover:text-primary hover:bg-primary/5 dark:hover:bg-primary/10 transition-colors text-sm font-medium"
+        title="Charger un nouveau PDF"
+      >
+        <span class="material-symbols-outlined text-[20px]">upload_file</span>
+        <span class="hidden md:inline">Nouveau PDF</span>
+      </button>
     </div>
   </div>
 </template>
@@ -41,6 +52,7 @@ const props = defineProps<{
 defineEmits<{
   'zoom-in': []
   'zoom-out': []
+  'new-pdf': []
 }>()
 
 const ZOOM_PERCENTS: Record<number, number> = { 1: 60, 2: 70, 3: 80, 4: 90, 5: 100 }
