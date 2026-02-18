@@ -6,7 +6,7 @@ services:
   #   2. Nginx qui sert ces fichiers et proxifie l'API vers le backend
   # Il n'y a donc pas de service "frontend" séparé en prod : il est intégré ici.
   # Dockploy expose ce service via HTTPS — nginx écoute en HTTP sur 80.
-  nginx:
+  pdf_nginx:
     build:
       context: .                        # contexte = racine du projet
       dockerfile: nginx/Dockerfile.prod # build multi-stage : node → nginx
@@ -15,13 +15,13 @@ services:
     # ports:
     #  - "80:80"
     depends_on:
-      - backend
+      - pdf_backend
     networks:
-      - app_network
+      - pdf_app_network
     restart: unless-stopped
 
   # ── Backend FastAPI ────────────────────────────────────────────────────────
-  backend:
+  pdf_backend:
     build:
       context: ./backend
       dockerfile: Dockerfile.prod
@@ -34,11 +34,11 @@ services:
       - THUMB_DPI=${THUMB_DPI:-150}
       - ALLOWED_ORIGINS=${ALLOWED_ORIGINS}
     networks:
-      - app_network
+      - pdf_app_network
     restart: unless-stopped
 
 volumes:
   pdf_sessions:
 
 networks:
-  app_network:
+  pdf_app_network:
