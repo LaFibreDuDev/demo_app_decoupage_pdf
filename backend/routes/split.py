@@ -35,6 +35,8 @@ async def split_pdf_route(request: SplitRequest):
                 zf.writestr(pdf_filename, pdf_bytes)
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
+    except KeyError:
+        raise HTTPException(status_code=404, detail="Session expirée ou introuvable.")
 
     zip_buffer.seek(0)
 
