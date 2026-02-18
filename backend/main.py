@@ -7,6 +7,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from config import ALLOWED_ORIGINS
 from routes.upload import router as upload_router
 from routes.split import router as split_router
+from routes.thumbs import router as thumbs_router
 from services.cleanup import cleanup_loop
 
 
@@ -28,3 +29,4 @@ app.add_middleware(
 
 app.include_router(upload_router)
 app.include_router(split_router)
+app.include_router(thumbs_router)

@@ -20,6 +20,7 @@
         :key="n"
         :page="n"
         :selected="selectedPages.includes(n)"
+        :thumb-url="thumbUrls[n - 1]"
         @toggle="togglePage(n)"
       />
     </div>
@@ -32,6 +33,7 @@ import PageCard from './PageCard.vue'
 
 const props = defineProps<{
   pageCount: number
+  sessionId: string
 }>()
 
 const emit = defineEmits<{
@@ -39,6 +41,7 @@ const emit = defineEmits<{
 }>()
 
 const selectedPages = ref<number[]>([])
+const thumbUrls = ref<string[]>([])
 
 function togglePage(page: number): void {
   const idx = selectedPages.value.indexOf(page)
@@ -56,6 +59,20 @@ function clearSelection(): void {
 watch(selectedPages, (val) => {
   emit('update:selected-pages', val)
 })
+
+watch(() => props.sessionId, async (sessionId) => {
+  thumbUrls.value = []
+  if (!sessionId) return
+  try {
+    const response = await fetch(`/thumbs/${sessionId}`)
+    if (response.ok) {
+      const data = await response.json()
+      thumbUrls.value = data.urls
+    }
+  } catch {
+    // Miniatures indisponibles — dégradation gracieuse vers affichage numérique
+  }
+}, { immediate: true })
 
 defineExpose({ clearSelection })
 </script>

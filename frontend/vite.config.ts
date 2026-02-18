@@ -8,6 +8,7 @@ export default defineConfig({
     proxy: {
       '/upload': 'http://localhost:8000',
       '/split': 'http://localhost:8000',
+      '/thumbs': 'http://localhost:8000',
     },
   },
 })

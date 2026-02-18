@@ -8,6 +8,7 @@
       <PageGrid
         ref="pageGridRef"
         :page-count="pageCount"
+        :session-id="sessionId ?? ''"
         @update:selected-pages="selectedPages = $event"
       />
 
