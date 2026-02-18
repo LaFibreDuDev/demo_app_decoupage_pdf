@@ -5,13 +5,22 @@
         Sélectionnez les pages à extraire
         <span class="text-gray-400 font-normal">({{ selectedPages.length }} sélectionnée(s))</span>
       </h2>
-      <button
-        v-if="selectedPages.length > 0"
-        @click="clearSelection"
-        class="text-xs text-gray-400 hover:text-gray-600 underline"
-      >
-        Tout désélectionner
-      </button>
+      <div class="flex gap-3">
+        <button
+          v-if="selectedPages.length < pageCount"
+          @click="selectAll"
+          class="text-xs text-gray-400 hover:text-gray-600 underline"
+        >
+          Tout sélectionner
+        </button>
+        <button
+          v-if="selectedPages.length > 0"
+          @click="clearSelection"
+          class="text-xs text-gray-400 hover:text-gray-600 underline"
+        >
+          Tout désélectionner
+        </button>
+      </div>
     </div>
 
     <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-3">
@@ -50,6 +59,10 @@ function togglePage(page: number): void {
   } else {
     selectedPages.value = selectedPages.value.filter((p) => p !== page)
   }
+}
+
+function selectAll(): void {
+  selectedPages.value = Array.from({ length: props.pageCount }, (_, i) => i + 1)
 }
 
 function clearSelection(): void {
