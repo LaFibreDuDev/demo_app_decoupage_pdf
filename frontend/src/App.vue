@@ -1,7 +1,7 @@
 <template>
   <div class="font-display bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 h-screen flex flex-col transition-colors duration-300 overflow-hidden">
 
-    <AppHeader :is-dark="isDark" @toggle-dark-mode="toggleDarkMode" @toggle-sidebar="sidebarOpen = !sidebarOpen" />
+    <AppHeader :is-dark="isDark" @toggle-dark-mode="toggleDarkMode" @toggle-sidebar="sidebarOpen = !sidebarOpen" @open-help="helpOpen = true" />
 
     <main class="flex flex-1 overflow-hidden">
 
@@ -58,6 +58,8 @@
       @close="showToast = false"
     />
 
+    <HelpModal :open="helpOpen" @close="helpOpen = false" />
+
   </div>
 </template>
 
@@ -69,6 +71,7 @@ import PageToolbar from './components/PageToolbar.vue'
 import PageGrid from './components/PageGrid.vue'
 import UploadZone from './components/UploadZone.vue'
 import UploadToast from './components/UploadToast.vue'
+import HelpModal from './components/HelpModal.vue'
 
 const ZOOM_MIN = 1
 const ZOOM_MAX = 5
@@ -81,6 +84,7 @@ const outputMode = ref<'merged' | 'separate'>('merged')
 const zoomLevel = ref<number>(3)
 const isDark = ref<boolean>(false)
 const sidebarOpen = ref<boolean>(false)
+const helpOpen = ref<boolean>(false)
 const showToast = ref<boolean>(false)
 const toastFilename = ref<string>('')
 const toastFileSizeMo = ref<string>('')
