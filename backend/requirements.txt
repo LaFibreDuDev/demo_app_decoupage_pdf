@@ -2,5 +2,6 @@ fastapi>=0.115.0
 uvicorn[standard]>=0.30.0
 python-multipart>=0.0.12
 pikepdf>=9.0.0
+pdf2image>=1.17.0
 cryptography>=42.0.0
 python-dotenv>=1.0.0

@@ -18,6 +18,9 @@ frontend/.vite/
 # Répertoire de sessions temporaires
 /tmp/pdf_splitter/
 
+# Docker
+.docker/
+
 # OS
 .DS_Store
 Thumbs.db
