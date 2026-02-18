@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full max-w-2xl">
+  <div class="w-full max-w-4xl">
     <div class="flex items-center justify-between mb-3">
       <h2 class="text-sm font-medium text-gray-700">
         Sélectionnez les pages à extraire
@@ -14,7 +14,7 @@
       </button>
     </div>
 
-    <div class="flex flex-wrap gap-3">
+    <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-3">
       <PageCard
         v-for="n in pageCount"
         :key="n"
