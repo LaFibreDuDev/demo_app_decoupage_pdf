@@ -36,7 +36,18 @@
       "Bash(curl:*)",
       "mcp__puppeteer-mcp-claude__puppeteer_navigate",
       "mcp__context7__resolve-library-id",
-      "mcp__context7__query-docs"
+      "mcp__context7__query-docs",
+      "Bash(openspec new:*)",
+      "Bash(openspec status:*)",
+      "Bash(openspec instructions proposal:*)",
+      "Bash(openspec instructions design:*)",
+      "Bash(openspec instructions:*)",
+      "Bash(python3:*)",
+      "Bash(npx vue-tsc:*)",
+      "mcp__puppeteer-mcp-claude__puppeteer_new_page",
+      "mcp__puppeteer-mcp-claude__puppeteer_launch",
+      "mcp__puppeteer-mcp-claude__puppeteer_wait_for_selector",
+      "mcp__puppeteer-mcp-claude__puppeteer_close_browser"
     ],
     "deny": []
   }
