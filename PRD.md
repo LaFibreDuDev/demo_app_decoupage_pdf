@@ -74,6 +74,7 @@ Créer une application permettant à un utilisateur de :
 - Amélioration de l’interface utilisateur pour une meilleure expérience sur mobile (responsive design).
 - Ajout d'un skeleton sur les cards pendant le chargement des miniatures des pages pour améliorer l'expérience utilisateur.
 - Ajout d'une barre de progression pendant l'upload pour informer l'utilisateur de l'avancement du téléchargement du fichier PDF.
+- Ajout d'un texte d'aide ou d'un tutoriel pour guider les utilisateurs dans le processus de découpage et de téléchargement des fichiers PDF.
 
 **Pourquoi :** Expérience complète, pratique et sécurisée pour tous les utilisateurs.
 
